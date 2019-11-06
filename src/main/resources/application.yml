@@ -1,6 +1,10 @@
 server:
-  port: 8020
-  servlet:
-    context-path: /tools
+    port: 8020
+    servlet:
+        context-path: /tools
+
+logging:
+    level:
+        root: info
 
 

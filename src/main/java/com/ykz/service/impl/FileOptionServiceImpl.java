@@ -25,7 +25,9 @@ public class FileOptionServiceImpl implements FileOptionService {
     public String uploadFile(MultipartFile file) throws BusinessException {
 
         String origFile = file.getOriginalFilename();
-        log.info("开始上传文件:"+origFile);
+        if (log.isInfoEnabled()){
+            log.info("开始上传文件:"+origFile);
+        }
         String filePath = null;
         try {
             filePath = ResourceUtils.getURL("upload").getPath().concat(File.separator).concat(origFile);

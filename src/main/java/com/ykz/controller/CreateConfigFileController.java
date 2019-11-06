@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CreateConfigFileController extends BaseController{
 
-    private static final Logger log = LoggerFactory.getLogger(CreateConfigFileController.class);
+    private static final Logger logger = LoggerFactory.getLogger(CreateConfigFileController.class);
     @Autowired
     FileOptionService fileOptionService;
 
