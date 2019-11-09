@@ -12,9 +12,7 @@ import java.util.regex.Pattern;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 
 /**
- * Excel读取公共类。
- * @author elon
- * @version 2018年7月7日
+ * 读取 excel 所有内容的工具类。
  */
 public class ExcelReaderUtil extends ExcelAbstract {
 
@@ -28,13 +26,10 @@ public class ExcelReaderUtil extends ExcelAbstract {
      */
     private List<Map<String, String>> dataList = new ArrayList<>();
 
-    @Override
-    public void optRows(int curRow, Map<String, String> rowValueMap) {
+    private Map<String, List> excelMap = new HashMap<>();
 
-        Map<String, String> dataMap = new HashMap<>();
-        rowValueMap.forEach((k,v)->dataMap.put(removeNum(k), v));
-        dataList.add(dataMap);
-    }
+    private String key;
+
 
     /**
      * 日期数字转换为字符串。
@@ -63,7 +58,34 @@ public class ExcelReaderUtil extends ExcelAbstract {
         return "";
     }
 
-    public List<Map<String, String>> getDataList() {
-        return dataList;
+    public Map<String, List> getExcelMap() {
+        excelMap.put(key, dataList);
+        return excelMap;
+    }
+
+    @Override
+    public void getRows(int sheetIndex, int curRow, Map<String, String> rowValueMap) {
+        Map<String, String> dataMap = new HashMap<>();
+        rowValueMap.forEach((k,v)->dataMap.put(removeNum(k), v));
+        dataList.add(dataMap);
+        key = String.valueOf(sheetIndex - 1);
+        if (sheetIndex != 1 && !excelMap.containsKey(String.valueOf(key)) ){
+            List<Map<String, String>> newList = new ArrayList(dataList);
+            excelMap.put(key, newList);
+            dataList.clear();
+        }
+        key = String.valueOf(sheetIndex);
+    }
+
+    public static void main(String[] args) {
+        try {
+            ExcelReaderUtil excel = new ExcelReaderUtil();
+            String file = "/Users/yangkz/IdeaProjects/tools/src/main/resources/upload/蒙古族人口.xlsx";
+
+            excel.process(file,1);
+            System.out.println(excel.getExcelMap());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

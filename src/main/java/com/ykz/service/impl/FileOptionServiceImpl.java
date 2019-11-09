@@ -49,11 +49,6 @@ public class FileOptionServiceImpl implements FileOptionService {
             logger.error(errorMessage);
             throw new BusinessException(EmReturnCode.FAIL, errorMessage);
         }
-        if (filePath == null){
-            errorMessage = "上传文件：["+ filePath +"] 失败";
-            logger.error(errorMessage);
-            throw new BusinessException(EmReturnCode.FAIL, errorMessage);
-        }
         return filePath;
     }
 

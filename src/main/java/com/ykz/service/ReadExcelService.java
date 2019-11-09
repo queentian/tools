@@ -1,5 +1,6 @@
 package com.ykz.service;
 
+import com.ykz.exception.BusinessException;
 import com.ykz.model.ReadExcelModel;
 
 
@@ -10,5 +11,5 @@ public interface ReadExcelService {
      * @param filePath 文件路径
      * @return excel 的所有内容
      */
-    String getAllData(String filePath);
+    String getAllData(String filePath) throws BusinessException;
 }
