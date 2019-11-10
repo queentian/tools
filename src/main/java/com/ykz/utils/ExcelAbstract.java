@@ -39,20 +39,23 @@ public abstract class ExcelAbstract extends DefaultHandler {
      * @param filename
      * @throws Exception
      */
-    public void process(String filename) throws Exception {
+    public Map<String, String> process(String filename) throws Exception {
         OPCPackage pkg = OPCPackage.open(filename);
         XSSFReader r = new XSSFReader(pkg);
         SharedStringsTable sst = r.getSharedStringsTable();
         XMLReader parser = fetchSheetParser(sst);
-        Iterator<InputStream> sheets = r.getSheetsData();
+        XSSFReader.SheetIterator sheets = (XSSFReader.SheetIterator)r.getSheetsData();
+        Map<String, String> map = new HashMap<>();
         while (sheets.hasNext()) {
             curRow = 0;
             sheetIndex++;
             InputStream sheet = sheets.next();
+            map.put(String.valueOf(sheetIndex + 1), sheets.getSheetName());
             InputSource sheetSource = new InputSource(sheet);
             parser.parse(sheetSource);
             sheet.close();
         }
+        return map;
     }
 
     /**

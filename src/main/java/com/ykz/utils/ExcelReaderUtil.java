@@ -82,7 +82,8 @@ public class ExcelReaderUtil extends ExcelAbstract {
             ExcelReaderUtil excel = new ExcelReaderUtil();
             String file = "/Users/yangkz/IdeaProjects/tools/src/main/resources/upload/蒙古族人口.xlsx";
 
-            excel.process(file,1);
+            Map<String, String> map = excel.process(file);
+            System.out.println(map.toString());
             System.out.println(excel.getExcelMap());
         } catch (Exception e) {
             e.printStackTrace();

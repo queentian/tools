@@ -8,6 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class ReadExcelServiceImpl implements ReadExcelService {
 
@@ -18,8 +21,8 @@ public class ReadExcelServiceImpl implements ReadExcelService {
         String errorMsg;
         ExcelReaderUtil er = new ExcelReaderUtil();
         try {
-            er.process(filePath);
-            er.getExcelMap();
+            Map<String, String> sheetMap = er.process(filePath);
+            Map<String, List> dataMap = er.getExcelMap();
         } catch (Exception e) {
             errorMsg = "读取 excel 表格失败";
             logger.error(errorMsg, e);
