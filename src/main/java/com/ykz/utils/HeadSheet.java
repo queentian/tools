@@ -1,5 +1,11 @@
 package com.ykz.utils;
 
+import com.ykz.bean.BlockBean;
+import com.ykz.bean.FieldBean;
+import com.ykz.bean.XmlBean;
+import org.apache.logging.log4j.util.Strings;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,16 +14,10 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.ykz.bean.BlockBean;
-import com.ykz.bean.FieldBean;
-import com.ykz.bean.XmlBean;
-import org.apache.logging.log4j.util.Strings;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-
 /**
  * 读取 excel 所有内容的工具类。
  */
-public class BodySheet extends ExcelAbstract {
+public class HeadSheet extends ExcelAbstract {
 
     // 提取列名称的正则表达式
     private static final String DISTILL_COLUMN_REG = "^([A-Z]+)";
@@ -58,24 +58,6 @@ public class BodySheet extends ExcelAbstract {
     public void getRows(int sheetIndex, int curRow, Map<String, String> rowValueMap) {
         Map<String, String> dataMap = new HashMap<>();
         rowValueMap.forEach((k,v)->dataMap.put(removeNum(k), v));
-        if (curRow == 0){
-
-            if (!Strings.isBlank(dataMap.get("B"))){
-                // 获取到交易码和服务码
-                xmlBean.setTxCode(dataMap.get("B"));
-                xmlBean.setServiceCode(StringFormatUtil.subCharBefore(dataMap.get("H"),"(", "（"));
-                return;
-            }
-            System.out.println("第"+ sheetIndex + "个 sheet页 交易码为空");
-            return;
-        }
-        if (curRow == 1){
-            xmlBean.setServiceSine(StringFormatUtil.subCharBefore(dataMap.get("H"),"(", "（"));
-            return;
-        }
-        if (curRow < 3){
-            return;
-        }
         // 如果是输如输出则直接结束
         if (Objects.equals(dataMap.get("A"), "输入")){
             return;
@@ -86,8 +68,9 @@ public class BodySheet extends ExcelAbstract {
         }
         BlockBean bb = isOut? outBlock: inBlock;
         GenerateConfigUtils.saveRow(dataMap, stackBean, bb);
-
     }
+
+
 
     public XmlBean getXmlBean(){
         this.xmlBean.setInList(inBlock);
@@ -98,7 +81,7 @@ public class BodySheet extends ExcelAbstract {
 
     public static void main(String[] args) {
         try {
-            BodySheet excel = new BodySheet();
+            HeadSheet excel = new HeadSheet();
             String file = "/Users/yangkz/IdeaProjects/tools/src/main/resources/upload/韶关公积金.xlsx";
             excel.process(file, 1);
             System.out.println(excel.getXmlBean());

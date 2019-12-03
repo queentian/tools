@@ -22,7 +22,7 @@ public class StringFormatUtil {
         return subCharBefore(lengthStr, ",", "，");
     }
 
-    private static String subCharBefore(String value, String... char1) {
+    public static String subCharBefore(String value, String... char1) {
         for (String flag : char1){
             if (value.contains(flag)){
                 int index = value.indexOf(flag);
