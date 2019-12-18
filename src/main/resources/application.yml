@@ -1,7 +1,7 @@
 server:
   port: 8020
   servlet:
-    context-path: /mytools
+    context-path: /tools
 
 # 日志级别
 logging:
@@ -11,9 +11,9 @@ logging:
 spring:
   # 数据库配置
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/mytools
-    username: root
-    password: root
+    url: jdbc:mysql://129.28.33.33/demo
+    username: x
+    password: x
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
 

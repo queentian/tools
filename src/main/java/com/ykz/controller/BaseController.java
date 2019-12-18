@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author yangkz
  */
-@CrossOrigin
 @RestController
 public class BaseController {
 

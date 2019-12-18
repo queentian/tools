@@ -1,8 +1,10 @@
 package com.ykz.utils;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
@@ -33,6 +35,24 @@ public abstract class ExcelAbstract extends DefaultHandler {
     // 当前行
     private int curRow = 0;
 
+
+    /**
+     * 遍历工作簿中所有的电子表格
+     * @param filename 文件名
+     * @throws Exception
+     */
+    public List<String> getSheetName(String filename) throws Exception {
+        OPCPackage pkg = OPCPackage.open(filename);
+        XSSFReader r = new XSSFReader(pkg);
+        XSSFReader.SheetIterator sheets = (XSSFReader.SheetIterator)r.getSheetsData();
+        List<String> list = new ArrayList<>();
+        int index = 0;
+        while (sheets.hasNext()) {
+            sheets.next();
+            list.add(sheets.getSheetName());
+        }
+        return list;
+    }
 
     /**
      * 遍历工作簿中所有的电子表格

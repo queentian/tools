@@ -9,14 +9,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.ykz.bean.BlockBean;
-import com.ykz.bean.FieldBean;
 import com.ykz.bean.XmlBean;
 import org.apache.logging.log4j.util.Strings;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.springframework.stereotype.Service;
 
 /**
  * 读取 excel 所有内容的工具类。
  */
+@Service
 public class BodySheet extends ExcelAbstract {
 
     // 提取列名称的正则表达式

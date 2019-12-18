@@ -1,15 +1,16 @@
 package com.ykz.service;
 
 import com.ykz.exception.BusinessException;
-import com.ykz.model.ReadExcelModel;
+
+import java.util.List;
 
 
 public interface ReadExcelService {
 
     /**
-     * 根据文件路径获取到 excel 文件中的所有内容
+     * 根据文件路径获取到 excel 文件中的所有sheet页名称和位置
      * @param filePath 文件路径
-     * @return excel 的所有内容
+     * @return excel 文件中的所有sheet页名称和位置
      */
-    String getAllData(String filePath) throws BusinessException;
+    List<String> getSheetName(String filePath) throws BusinessException;
 }

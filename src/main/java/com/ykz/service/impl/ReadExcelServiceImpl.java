@@ -6,6 +6,7 @@ import com.ykz.service.ReadExcelService;
 import com.ykz.utils.BodySheet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,18 +17,21 @@ public class ReadExcelServiceImpl implements ReadExcelService {
 
     private static final Logger logger = LoggerFactory.getLogger(ReadExcelServiceImpl.class);
 
+    @Autowired
+    BodySheet bodySheet;
+
     @Override
-    public String getAllData(String filePath) throws BusinessException {
-        String errorMsg;
-        BodySheet er = new BodySheet();
+    public List<String> getSheetName(String filePath) throws BusinessException {
+        List<String> sheetList = null;
         try {
-            Map<String, String> sheetMap = er.process(filePath);
-//            Map<String, List> dataMap = er.getExcelMap();
+            sheetList = bodySheet.getSheetName(filePath);
         } catch (Exception e) {
-            errorMsg = "读取 excel 表格失败";
-            logger.error(errorMsg, e);
-            throw new BusinessException(EmReturnCode.FAIL, errorMsg);
+            String errorMessage = "获取sheet页失败";
+            if (logger.isErrorEnabled()){
+                logger.error(errorMessage);
+            }
+            throw new BusinessException(EmReturnCode.FAIL, errorMessage);
         }
-        return null;
+        return sheetList;
     }
 }

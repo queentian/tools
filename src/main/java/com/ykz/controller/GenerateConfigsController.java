@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+import java.util.Map;
+
 @RequestMapping("/generateConfigs")
 @RestController
 public class GenerateConfigsController extends BaseController{
@@ -29,7 +32,7 @@ public class GenerateConfigsController extends BaseController{
      * @return 所有excel文档中的内容
      * @throws BusinessException 业务异常
      */
-    @PostMapping("/getExcelData")
+    @PostMapping("/uploadExcelFile")
     public ResultData createConfigs(MultipartFile file) throws BusinessException {
         //判断文件是否为空
         if (file == null || file.isEmpty()) {
@@ -38,8 +41,8 @@ public class GenerateConfigsController extends BaseController{
         }
         String filePath = fileOptionService.uploadFile(file);
         // TODO：返回类型根据等读取excel的方法实现了之后再确定，暂时返回String
-        String data = readExcelService.getAllData(filePath);
-
-        return new ResultData(EmReturnCode.SUCCESS, data);
+        List<String> sheetName = readExcelService.getSheetName(filePath);
+        return new ResultData(EmReturnCode.SUCCESS, sheetName);
     }
+
 }

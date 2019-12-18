@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -45,8 +44,8 @@ public class FileOptionServiceImpl implements FileOptionService {
                 logger.info("文件上传成功：".concat(filePath));
             }
         } catch (IOException e) {
-            errorMessage = "上传文件：["+ filePath +"] 失败";
-            logger.error(errorMessage);
+            errorMessage = "上传文件失败";
+            logger.error(errorMessage, e);
             throw new BusinessException(EmReturnCode.FAIL, errorMessage);
         }
         return filePath;
