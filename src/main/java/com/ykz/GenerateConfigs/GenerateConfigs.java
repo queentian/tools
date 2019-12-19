@@ -1,29 +1,24 @@
 package com.ykz.GenerateConfigs;
 
+import com.ykz.bean.BlockBean;
+import com.ykz.bean.GenerateRule;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+
+import java.util.Map;
+
 public interface GenerateConfigs {
 
     /**
      * 创建 XML 文件
      */
-    void generate();
+    Document generateRuleDocument(GenerateRule rule);
 
-    /**
-     * 创建 properties 文件
-     */
-    void generateProperties();
+    void createServiceCode(String svcCd, String svcScn, Document document);
 
-    /**
-     * 对比并创建 元数据文件
-     */
-    void generateMetadata();
+    void createField(GenerateRule rule, Document document, BlockBean blockBean);
 
-    /**
-     * 创建服务识别文件
-     */
-    void generateServiceIdentify();
 
-    /**
-     * 创建系统识别文件
-     */
-    void generateSystemIdentify();
+
 }

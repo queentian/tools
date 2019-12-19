@@ -1,9 +1,8 @@
 package com.ykz.utils;
 
 import com.ykz.bean.BlockBean;
-import com.ykz.bean.FieldBean;
 import com.ykz.bean.XmlBean;
-import org.apache.logging.log4j.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 
 import java.text.SimpleDateFormat;
@@ -58,19 +57,19 @@ public class HeadSheet extends ExcelAbstract {
     public void getRows(int sheetIndex, int curRow, Map<String, String> rowValueMap) {
         Map<String, String> dataMap = new HashMap<>();
         rowValueMap.forEach((k,v)->dataMap.put(removeNum(k), v));
-        // 如果是输如输出则直接结束
-        if (Objects.equals(dataMap.get("A"), "输入")){
+        if(StringUtils.isBlank(dataMap.get("A")) && StringUtils.isBlank(dataMap.get("H"))){
+            return;
+        }
+        if(dataMap.get("A") != null && dataMap.get("A").startsWith("特别说明：")){
             return;
         }
         if (Objects.equals(dataMap.get("A"), "输出")){
             isOut = true;
             return;
         }
-        BlockBean bb = isOut? outBlock: inBlock;
-        GenerateConfigUtils.saveRow(dataMap, stackBean, bb);
+        GenerateConfigUtils.getValue(curRow, 1, dataMap, isOut, inBlock, outBlock, stackBean);
+
     }
-
-
 
     public XmlBean getXmlBean(){
         this.xmlBean.setInList(inBlock);
@@ -79,14 +78,4 @@ public class HeadSheet extends ExcelAbstract {
 
     }
 
-    public static void main(String[] args) {
-        try {
-            HeadSheet excel = new HeadSheet();
-            String file = "/Users/yangkz/IdeaProjects/tools/src/main/resources/upload/韶关公积金.xlsx";
-            excel.process(file, 1);
-            System.out.println(excel.getXmlBean());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

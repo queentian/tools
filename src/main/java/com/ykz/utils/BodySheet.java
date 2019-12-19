@@ -1,18 +1,19 @@
 package com.ykz.utils;
 
+import com.ykz.bean.BlockBean;
+import com.ykz.bean.XmlBean;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.springframework.stereotype.Service;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.ykz.bean.BlockBean;
-import com.ykz.bean.XmlBean;
-import org.apache.logging.log4j.util.Strings;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-import org.springframework.stereotype.Service;
 
 /**
  * 读取 excel 所有内容的工具类。
@@ -27,6 +28,9 @@ public class BodySheet extends ExcelAbstract {
     private BlockBean outBlock = new BlockBean();
     private StackBean stackBean = new StackBean();
     private boolean isOut = false;
+
+    private Map<String, List> excelMap = new HashMap<>();
+
 
     /**
      * 日期数字转换为字符串。
@@ -54,39 +58,35 @@ public class BodySheet extends ExcelAbstract {
         return "";
     }
 
-
     @Override
     public void getRows(int sheetIndex, int curRow, Map<String, String> rowValueMap) {
         Map<String, String> dataMap = new HashMap<>();
-        rowValueMap.forEach((k,v)->dataMap.put(removeNum(k), v));
+        rowValueMap.forEach((k,v) -> dataMap.put(removeNum(k), v));
+        if(StringUtils.isBlank(dataMap.get("A")) && StringUtils.isBlank(dataMap.get("H"))){
+            return;
+        }
+        if(dataMap.get("A") != null && dataMap.get("A").startsWith("特别说明：")){
+            return;
+        }
         if (curRow == 0){
-
-            if (!Strings.isBlank(dataMap.get("B"))){
+            if (!StringUtils.isBlank(dataMap.get("B"))){
                 // 获取到交易码和服务码
                 xmlBean.setTxCode(dataMap.get("B"));
-                xmlBean.setServiceCode(StringFormatUtil.subCharBefore(dataMap.get("H"),"(", "（"));
+                xmlBean.setServiceCode(StringFormatUtil.subCharBefore(dataMap.get("I"),"(", "（"));
                 return;
             }
             System.out.println("第"+ sheetIndex + "个 sheet页 交易码为空");
             return;
         }
         if (curRow == 1){
-            xmlBean.setServiceSine(StringFormatUtil.subCharBefore(dataMap.get("H"),"(", "（"));
-            return;
-        }
-        if (curRow < 3){
-            return;
-        }
-        // 如果是输如输出则直接结束
-        if (Objects.equals(dataMap.get("A"), "输入")){
+            xmlBean.setServiceSine(StringFormatUtil.subCharBefore(dataMap.get("I"),"(", "（"));
             return;
         }
         if (Objects.equals(dataMap.get("A"), "输出")){
             isOut = true;
             return;
         }
-        BlockBean bb = isOut? outBlock: inBlock;
-        GenerateConfigUtils.saveRow(dataMap, stackBean, bb);
+        GenerateConfigUtils.getValue(curRow, 5, dataMap, isOut, inBlock, outBlock, stackBean);
 
     }
 
@@ -97,14 +97,4 @@ public class BodySheet extends ExcelAbstract {
 
     }
 
-    public static void main(String[] args) {
-        try {
-            BodySheet excel = new BodySheet();
-            String file = "/Users/yangkz/IdeaProjects/tools/src/main/resources/upload/韶关公积金.xlsx";
-            excel.process(file, 1);
-            System.out.println(excel.getXmlBean());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -3,7 +3,6 @@ package com.ykz.utils;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -37,7 +36,7 @@ public abstract class ExcelAbstract extends DefaultHandler {
 
 
     /**
-     * 遍历工作簿中所有的电子表格
+     * 遍历工作簿中所有的电子表格,获取sheet名称
      * @param filename 文件名
      * @throws Exception
      */
@@ -53,7 +52,6 @@ public abstract class ExcelAbstract extends DefaultHandler {
         }
         return list;
     }
-
     /**
      * 遍历工作簿中所有的电子表格
      * @param filename 文件名

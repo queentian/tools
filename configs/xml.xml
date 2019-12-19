@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service store-mode="UTF-8" package_type="xml">
+    <APP_HEAD/>
+    <BODY>
+        <BrchCd metadataid="BrchCd"/>
+        <BidNo metadataid="BidNo"/>
+        <CalIntTp metadataid="CalIntTp"/>
+        <DueDt metadataid="DueDt"/>
+    </BODY>
+    <SYS_HEAD>
+        <SvcCd expression="'80152000002'" metadataid="SvcCd" isSdoHead="true"/>
+        <SvcScn expression="'19'" metadataid="SvcCd" isSdoHead="true"/>
+    </SYS_HEAD>
+    <LOCAL_HEAD/>
+</service>
+        <?xml version="1.0" encoding="UTF-8"?>
+<root>
+<head/>
+<body>
+    <InstCode metadataid="BrchCd"/>
+    <InstSeq metadataid="BidNo"/>
+    <InstType metadataid="CalIntTp"/>
+    <MatuDay metadataid="DueDt"/>
+</body>
+</root>
